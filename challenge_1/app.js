@@ -24,7 +24,7 @@ let activeGame = true;
 // switching between X & O players
 const handlePlayerChange = () => {
   currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-  document.querySelector('.currentPlayer').innerHTML = `Current Player: ${currentPlayer}` //FIX ME
+  document.querySelector('.currentPlayer').innerHTML = `Current Player: ${currentPlayer}`;
 };
 
 // check if box is filled
@@ -39,7 +39,7 @@ const handlePlayedBox = (box, index) => {
 const handleBoxClick = (event) => {
   let boxNumber = parseInt(event.target.getAttribute('data-box'));
   // check if box is filled, if so, return
-  if(gameState[boxNumber]) {
+  if(gameState[boxNumber] !== '' || !activeGame) {
     return;
   }
   // else, handlePlayedBox and check for winner
@@ -49,15 +49,25 @@ const handleBoxClick = (event) => {
 
 // check if anyone won
 const handleWinner = () => {
-  let winner = false;
-  for (let i = 0; i < 8; i++) {
-    let condition = winningConditions[i];
-    if (!gameState[condition[0]]
-     || !gameState[condition[1]]
-     || !gameState[condition[2]]) {
+  let gameOver = false;
+  for (let i = 0; i <= 7; i++) {
+    const condition = winningConditions[i];
+    if (gameState[condition[0]] === ''
+     || gameState[condition[1]] === ''
+     || gameState[condition[2]] === '') {
       continue;
     }
-    
+    if (gameState[condition[0]] === gameState[condition[1]]
+     && gameState[condition[1]] === gameState[condition[2]]) {
+      gameOver = true;
+      break;
+    }
+  }
+  if (gameOver) {
+    document.querySelector('.currentPlayer').innerHTML = roundWinner();
+  }
+  if (!gameState.includes('')) {
+    document.querySelector('.currentPlayer').innerHTML = draw();
   }
 
   handlePlayerChange();
@@ -65,7 +75,13 @@ const handleWinner = () => {
 
 // clear current board
 const handleClearButton = () => {
-
+  activeGame = true;
+  currentPlayer = 'X';
+  gameState = ['', '', '', '', '', '', '', '', ''];
+  document.querySelector('.currentPlayer').innerHTML = `Current Player: ${currentPlayer}`;
+  document.querySelectorAll('.box').forEach((box) => {
+    box.innerHTML = '';
+  })
 };
 
 // reset entire game
@@ -74,7 +90,7 @@ const handleResetButton = () => {
 };
 
 // RESULT MESSAGES
-const won = () => `${currentPlayer} won!`;
+const roundWinner = () => `${currentPlayer} won!`;
 const draw = () => `Tie Game, try again!`;
 
 // Linking click functionality to class
