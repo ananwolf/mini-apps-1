@@ -4,12 +4,15 @@
 /* GLOBAL VARIABLES */
 // Winning Condition hard-coded:
 let winningConditions = [
-  [0, 1, 2], [3, 4, 5], [6, 7, 8],
-
-  [0, 3, 6], [1, 4, 7], [2, 5, 8],
-
-  [0, 4, 8], [2, 4, 6]
-]
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6]
+];
 // Game Board
 let gameState = ['', '', '', '', '', '', '', '', ''];
 // current player, switch between X O and use this for played box
@@ -52,24 +55,27 @@ const handleWinner = () => {
   let gameOver = false;
   for (let i = 0; i <= 7; i++) {
     const condition = winningConditions[i];
-    if (gameState[condition[0]] === ''
-     || gameState[condition[1]] === ''
-     || gameState[condition[2]] === '') {
+    let a = gameState[condition[0]];
+    let b = gameState[condition[1]];
+    let c = gameState[condition[2]];
+    if (a === '' || b === '' || c === '') {
       continue;
     }
-    if (gameState[condition[0]] === gameState[condition[1]]
-     && gameState[condition[1]] === gameState[condition[2]]) {
+    if (a === b && b === c) {
       gameOver = true;
       break;
     }
   }
   if (gameOver) {
     document.querySelector('.currentPlayer').innerHTML = roundWinner();
+    activeGame = false;
+    return;
   }
   if (!gameState.includes('')) {
     document.querySelector('.currentPlayer').innerHTML = draw();
+    activeGame = false;
+    return;
   }
-
   handlePlayerChange();
 };
 
