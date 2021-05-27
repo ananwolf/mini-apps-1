@@ -16,11 +16,15 @@ let winningConditions = [
 // Game Board
 let gameState = ['', '', '', '', '', '', '', '', ''];
 // current player, switch between X O and use this for played box
-let currentPlayer = 'X'
+let currentPlayer = 'X';
 // game counter
 let gamesPlayed = 0;
 // game check (grey out the board with CSS when game is over)
 let activeGame = true;
+// score trackers
+let currentGame = 1;
+let xScore = 0;
+let oScore = 0;
 
 /* FUNCTIONS */
 
@@ -76,6 +80,11 @@ const handleWinner = () => {
     activeGame = false;
     return;
   }
+  // if (!activeGame) {
+  //   document.querySelectorAll('.box').forEach((box) => {
+
+  //   })
+  // }
   handlePlayerChange();
 };
 
